@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/header', {theme: theme}) %>
+        <script src="https://cdn.jsdelivr.net/npm/xterm-addon-attach@0.6.0/lib/xterm-addon-attach.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css">
+        <link media="all" type="text/css" rel="stylesheet" href="/themes/pterodactyl/css/terminal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xterm@4.19.0/lib/xterm.min.js"></script>
+</head>
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+    <div class="wrapper">
+        <%- include('../partials/navbar', {user: user}) %>
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        <div class="info">
+                            <p id="<%= instance.name %>-state"><i class="fa fa-circle text-success"></i>
+                                <%= instance.name %>
+                            </p>
+                            <p style="font-size: 13px;"><i class="fa-solid fa-hard-drive"></i><span
+                                style="font-weight:normal;""> <%= instance.config["image.os"] ? instance.config["image.os"].replace(/\w/, c => c.toUpperCase()) : "Unknown OS" %> <%= instance.config["image.version"] ? instance.config["image.version"].replace(/\w/, c => c.toUpperCase()) : (instance.config["image.release"] ? instance.config["image.release"].replace(/\w/, c => c.toUpperCase()) : "") %></span></p>
+                            <p style="font-size: 13px;"><i class="fa-solid fa-microchip"></i><span
+                                    style="font-weight:normal;" id="<%= instance.name %>-cpu"> --%</span></p>
+                            <p style="font-size: 13px;"><i class="fa-solid fa-memory"></i><span
+                                    style="font-weight:normal;" id="<%= instance.name %>-mem"> --GB</span></p>
+                            <p style="font-size: 13px;"><i class="fa-solid fa-network-wired"></i><span
+                                    style="font-weight:normal;" id="<%= instance.name %>-network"> 0.0.0.0</span></p>
+                        </div>
+
+                    </div>
+                    <ul class="sidebar-menu tree" data-widget="tree">
+
+                        <li class="header">ACCOUNT MANAGEMENT</li>
+                        <li class="1">
+                            <a href="/client/dashboard">
+                                <i class="fa fa-tv"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/account">
+                                <i class="fa fa-user"></i> <span>My Account</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client">
+                                <i class="fa fa-server"></i> <span>My Servers</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/networks">
+                                <i class="fa fa-network-wired"></i> <span>Networks</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/images">
+                                <i class="fa fa-compact-disc"></i> <span>Images</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/users">
+                                <i class="fa fa-solid fa-user"></i> <span>Users</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/nodes">
+                                <i class="fa fa-solid fa-server"></i> <span>Nodes</span>
+                            </a>
+                        </li>
+                        <li class="header">SERVER MANAGEMENT</li>
+                        <li class="active">
+                            <a href="/client/instances/<%= instance.name %>">
+                                <i class="fa fa-terminal"></i> <span>Console</span>
+                                <span class="pull-right-container muted muted-hover"
+                                    href="/client/instances/<%= instance.name %>/console" id="console-popout">
+                                    <span class="label label-default pull-right" style="padding: 3px 5px 2px 5px;">
+                                        <i class="fa fa-external-link"></i>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/client/instances/<%= instance.name %>/files">
+                                <i class="fa fa-folder"></i><span>File Management</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-network-wired"></i>
+                                <span>Network Management</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="1"><a href="/client/instances/9d192475/settings/name"><i
+                                            class="fa fa-angle-right"></i>
+                                        Bridge Configuration</a></li>
+                                <li class="1"><a href="/client/instances/9d192475/settings/allocation"><i
+                                            class="fa fa-angle-right"></i> Port Forwardings</a></li>
+                            </ul>
+                        </li>
+
+
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-gears"></i>
+                                <span>Configuration</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="1"><a href="/client/instances/<%= instance.name %>/settings/name"><i
+                                            class="fa fa-angle-right"></i>
+                                        Server Name</a></li>
+                                <li class="1"><a href="/client/instances/<%= instance.name %>/settings/allocation"><i
+                                            class="fa fa-angle-right"></i> Allocation Settings</a></li>
+                                <li class="1"><a href="/client/instances/<%= instance.name %>/settings/sftp"><i
+                                            class="fa fa-angle-right"></i>
+                                        SFTP Settings</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="header">ADMINISTRATIVE</li>
+                        <li>
+                            <a href="/admin/servers/view/1" target="_blank">
+                                <i class="fa fa-cog"></i> <span>Server Configuration</span>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+            <div class="content-wrapper">
+
+                <section class="content">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <div class="box">
+
+                                <div class="box-body position-relative">
+                                    <div id="terminal" style="width:100%;height: 100%;"></div>
+                                </div>
+                                <div class="box-footer text-center">
+                                    <script>
+                                       function changeState(state) {
+                                        $.post("/api/v1/instances/<%= instance.name %>/state",{state}, function (data) {
+                                            setTimeout(() => {
+                                                location.reload()
+                                            }, 1000)
+                                           
+                                        });
+                                       }
+                                    </script>
+                                    <button class="btn btn-success" onclick="changeState('start')">Start</button>
+                                    <button class="btn btn-primary" onclick="changeState('restart')">Restart</button> 
+                                    <button class="btn btn-danger" onclick="changeState('stop')">Stop</button> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Memory Usage</h3>
+                                </div>
+                                <div class="box-body">
+                                    <canvas id="chart_memory" style="max-height:300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">CPU Usage</h3>
+                                </div>
+                                <div class="box-body">
+                                    <canvas id="chart_cpu" style="max-height:300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            function round(value, precision) {
+                                var multiplier = Math.pow(10, precision || 0);
+                                return Math.round(value * multiplier) / multiplier;
+                            }
+                            var ctc = $('#chart_cpu');
+                            var TimeLabels = [];
+                            var CPUData = [];
+                            var CPUChart = new Chart(document.getElementById('chart_cpu').getContext('2d'), {
+                                type: 'line',
+                                data: {
+                                    labels: TimeLabels,
+                                    datasets: [{
+                                        label: "Percent Use",
+                                        fill: true,
+                                        lineTension: 0.3,
+                                        backgroundColor: 'rgba(60, 141, 188, 0.75)',
+                                        borderColor: "#3c8dbc",
+                                        borderCapStyle: 'butt',
+                                        borderDash: [],
+                                        borderDashOffset: 0.0,
+                                        borderJoinStyle: 'miter',
+                                        pointBorderColor: "#3c8dbc",
+                                        pointBackgroundColor: "#fff",
+                                        pointBorderWidth: 1,
+                                        pointHoverRadius: 5,
+                                        pointHoverBackgroundColor: "#3c8dbc",
+                                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                                        pointHoverBorderWidth: 2,
+                                        pointRadius: 1,
+                                        pointHitRadius: 10,
+                                        data: CPUData,
+                                        spanGaps: false,
+                                    }]
+                                },
+                                options: {
+
+                                    title: {
+                                        display: true,
+                                        text: 'CPU Usage (as Percent Total)'
+                                    },
+                                    legend: {
+                                        display: false,
+                                    },
+                                    animation: {
+                                        duration: 1,
+                                    }
+                                }
+                            });
+                            var ctm = $('#chart_memory');
+                            var MemoryData = [];
+                            var MemoryChart = new Chart(ctm, {
+                                type: 'line',
+                                data: {
+                                    labels: TimeLabels,
+                                    datasets: [{
+                                        label: "Memory Use",
+                                        fill: true,
+                                        lineTension: 0.3,
+                                        backgroundColor: 'rgba(60, 141, 188, 0.75)',
+                                        borderColor: "#3c8dbc",
+                                        borderCapStyle: 'butt',
+                                        borderDash: [],
+                                        borderDashOffset: 0.0,
+                                        borderJoinStyle: 'miter',
+                                        pointBorderColor: "#3c8dbc",
+                                        pointBackgroundColor: "#fff",
+                                        pointBorderWidth: 1,
+                                        pointHoverRadius: 5,
+                                        pointHoverBackgroundColor: "#3c8dbc",
+                                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                                        pointHoverBorderWidth: 2,
+                                        pointRadius: 1,
+                                        pointHitRadius: 10,
+                                        data: MemoryData,
+                                        spanGaps: false,
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            ticks: {
+                                                // Include a dollar sign in the ticks
+                                                callback: function (value, index, ticks) {
+                                                    return `${value}MB`;
+                                                }
+                                            }
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Memory Usage (in Megabytes)'
+                                    },
+                                    legend: {
+                                        display: false,
+                                    },
+                                    animation: {
+                                        duration: 1,
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            callbacks: {
+                                                label: (item) =>
+                                                    `${item.dataset.label}: ${item.formattedValue} MB`,
+                                            },
+                                        },
+                                    },
+                                },
+
+                            });
+                            var prev_status = '<%= instance.status %>';
+                            async function fetchUsage() {
+                                function s(params) {
+                                    return new Promise((resolve) => {
+                                        $.get("/api/v1/instances/<%= instance.name %>/state", function (data) {
+                                            resolve(data)
+                                        });
+                                    })
+                                }
+                                var data = await s()
+                                if (CPUData.length > 10) {
+                                    CPUData.shift();
+                                    MemoryData.shift();
+                                    TimeLabels.shift();
+                                }
+                                var cpuUse = round(data.cpu.percent, 1)
+                                CPUData.push(cpuUse);
+                                MemoryData.push(parseInt(data.memory.used / (1024 * 1024)));
+                                TimeLabels.push($.format.date(new Date(), 'HH:mm:ss'));
+                                CPUChart.update();
+                                MemoryChart.update();
+                                if (data.state != prev_status) {
+                                    prev_status = data.state;
+                                    location.reload();
+                                }
+                                if (data.state == "Running") {
+                                    var inHTML = '<i class="fa fa-circle text-success"></i> <%= instance.name %>'
+                                } else if (data.state == "Stopped") {
+                                    
+                                    var inHTML = '<i class="fa fa-circle text-danger"></i> <%= instance.name %>'
+                                } else if (data.state == "Error") {
+                                    var inHTML = '<i class="fa fa-circle text-danger"></i> <%= instance.name %>'
+                                }
+                                $('#<%= instance.name %>-network').html(" " + (data.ip.address ?? "0.0.0.0"))
+                                $("#<%= instance.name %>-state").html(inHTML);
+                                $("#<%= instance.name %>-mem").html(" " + document.prettyBytes(data.memory.used));
+                                $("#<%= instance.name %>-cpu").html(" " + round(data.cpu.percent, 1) + "%");
+                                // var sa = {}
+                                // sa.rx = data.network["eth0"].received
+                                // sa.tx = data.network["eth0"].sent
+                                // return sa
+                            }
+                            setInterval(async () => {
+                                var now = await fetchUsage()
+                                // console.log((now.tx - prev_net.tx) / 1024);
+                                // console.log((now.rx - prev_net.rx) / 1024);
+                                // prev_net = now
+                                // console.log(now)
+                            }, 1500);
+                            fetchUsage();
+
+                        </script>
+                        <script>
+                            var status = '<%= instance.status %>';
+                            if (status == "Running") {
+                                var term = new Terminal({
+                                theme: {
+                                    background: "rgb(26, 26, 26)"
+                                }
+                            });
+                            var ws = new WebSocket((window.location.protocol == "http:" ? "ws" : "wss") + "://" + window.location.host + "/api/v1/instances/<%= instance.name %>/console")
+                            document.terminal = term
+                            ws.binaryType = 'arraybuffer';
+
+                            ws.onmessage = (event) => {
+                                if (typeof event.data == "string") {
+                                    var id = event.data;
+                                    var controlWS = new WebSocket((window.location.protocol == "http:" ? "ws" : "wss") + "://" + window.location.host + "/api/v1/instances/<%= instance.name %>/control?id=" + id)
+                                    window.onresize = () => {
+                                        //term.fit();
+                                        var cols = term.cols;
+                                        var rows = term.rows;
+                                        console.log(cols, rows);
+                                        controlWS.send(JSON.stringify({ command: "window-resize", width: cols, height: rows }));
+                                        controlWS.onmessage = (event) => {
+                                            console.log(event.data)
+                                        }
+                                    }
+                                } else {
+
+                                    //console.log(event.data)
+                                    term.write(new Uint8Array(event.data));
+                                }
+                            }
+                            term.onKey((data) => {
+                                // console.log(data)
+                                ws.send(data.key, { binary: true })
+                            })
+                            term.open(document.getElementById('terminal'));
+
+                            } else {
+                                var term = new Terminal({
+                                theme: {
+                                    background: "rgb(26, 26, 26)"
+                                }
+                            });
+                            
+                            term.open(document.getElementById('terminal'));
+
+                            }
+                            
+
+                        </script>
+                    </div>
+                </section>
+            </div>
+            <footer class="main-footer">
+                <div class="pull-right small text-gray" style="margin-right:10px;margin-top:-7px;">
+                    <strong><i class="fa fa-fw fa-code-fork"></i></strong> 0.7.19<br />
+                    <strong><i class="fa fa-fw fa-clock-o"></i></strong> 0.047s
+                </div>
+                Copyright &copy; 2015 - 2021 <a href="https://pterodactyl.io/">Pterodactyl Software</a>.
+            </footer>
+            <aside class="control-sidebar control-sidebar-dark">
+                <div class="tab-content">
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="/client/instances/9d192475" class="active">
+                                <i class="menu-icon fa fa-user bg-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">asdsdasd</h4>
+                                    <p></p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <div class="control-sidebar-bg"></div>
+    </div>
+    <script src="/js/keyboard.polyfill.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script>
+        keyboardeventKeyPolyfill.polyfill();
+    </script>
+
+    <script src="/js/laroute.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/jquery/jquery.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/sweetalert/sweetalert.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap/bootstrap.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script
+        src="/themes/pterodactyl/vendor/slimscroll/jquery.slimscroll.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/adminlte/app.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/socketio/socket.io.v203.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script
+        src="/themes/pterodactyl/vendor/bootstrap-notify/bootstrap-notify.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/js/autocomplete.js?t=170608a5266f48d1f615f57483a043d0"></script>
+
+    <script>
+        $('#logoutButton').on('click', function (event) {
+            event.preventDefault();
+
+            var that = this;
+            swal({
+                title: 'Do you want to log out?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d9534f',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Log out'
+            }, function () {
+                window.location = $(that).attr('href');
+            });
+        });
+    </script>
+
+    <script src="/themes/pterodactyl/vendor/ansi/ansi_up.js"></script>
+    <script src="/themes/pterodactyl/js/frontend/server.socket.js"></script>
+    <script src="/themes/pterodactyl/vendor/mousewheel/jquery.mousewheel-min.js"></script>
+    <script src="/themes/pterodactyl/js/frontend/console.js"></script>
+    <script src="/themes/pterodactyl/vendor/chartjs/chart.min.js"></script>
+    <script src="/themes/pterodactyl/vendor/jquery/date-format.min.js"></script>
+    <script src="/themes/pterodactyl/js/plugins/minecraft/eula.js"></script>
+</body>
+
+</html>

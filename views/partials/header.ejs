@@ -1,0 +1,165 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Pterodactyl - Your Account</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<meta name="_token" content="b4cpYrN5mu8pTt70YEWh4mwQL95bdwqBznfOtNnf">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/favicons/manifest.json">
+<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#bc6e3c">
+<link rel="shortcut icon" href="/favicons/favicon.ico">
+<meta name="msapplication-config" content="/favicons/browserconfig.xml">
+<meta name="theme-color" content="#0e4688">
+<script>
+        const BYTE_UNITS = [
+	'B',
+	'kB',
+	'MB',
+	'GB',
+	'TB',
+	'PB',
+	'EB',
+	'ZB',
+	'YB',
+];
+
+const BIBYTE_UNITS = [
+	'B',
+	'kiB',
+	'MiB',
+	'GiB',
+	'TiB',
+	'PiB',
+	'EiB',
+	'ZiB',
+	'YiB',
+];
+
+const BIT_UNITS = [
+	'b',
+	'kbit',
+	'Mbit',
+	'Gbit',
+	'Tbit',
+	'Pbit',
+	'Ebit',
+	'Zbit',
+	'Ybit',
+];
+
+const BIBIT_UNITS = [
+	'b',
+	'kibit',
+	'Mibit',
+	'Gibit',
+	'Tibit',
+	'Pibit',
+	'Eibit',
+	'Zibit',
+	'Yibit',
+];
+
+/*
+Formats the given number using `Number#toLocaleString`.
+- If locale is a string, the value is expected to be a locale-key (for example: `de`).
+- If locale is true, the system default locale is used for translation.
+- If no value for locale is specified, the number is returned unmodified.
+*/
+const toLocaleString = (number, locale, options) => {
+	let result = number;
+	if (typeof locale === 'string' || Array.isArray(locale)) {
+		result = number.toLocaleString(locale, options);
+	} else if (locale === true || options !== undefined) {
+		result = number.toLocaleString(undefined, options);
+	}
+
+	return result;
+};
+
+document.prettyBytes = function prettyBytes(number, options) {
+	if (!Number.isFinite(number)) {
+		throw new TypeError(`Expected a finite number, got ${typeof number}: ${number}`);
+	}
+
+	options = {
+		bits: false,
+		binary: false,
+		...options,
+	};
+
+	const UNITS = options.bits
+		? (options.binary ? BIBIT_UNITS : BIT_UNITS)
+		: (options.binary ? BIBYTE_UNITS : BYTE_UNITS);
+
+	if (options.signed && number === 0) {
+		return ` 0 ${UNITS[0]}`;
+	}
+
+	const isNegative = number < 0;
+	const prefix = isNegative ? '-' : (options.signed ? '+' : '');
+
+	if (isNegative) {
+		number = -number;
+	}
+
+	let localeOptions;
+
+	if (options.minimumFractionDigits !== undefined) {
+		localeOptions = {minimumFractionDigits: options.minimumFractionDigits};
+	}
+
+	if (options.maximumFractionDigits !== undefined) {
+		localeOptions = {maximumFractionDigits: options.maximumFractionDigits, ...localeOptions};
+	}
+
+	if (number < 1) {
+		const numberString = toLocaleString(number, options.locale, localeOptions);
+		return prefix + numberString + ' ' + UNITS[0];
+	}
+
+	const exponent = Math.min(Math.floor(options.binary ? Math.log(number) / Math.log(1024) : Math.log10(number) / 3), UNITS.length - 1);
+	number /= (options.binary ? 1024 : 1000) ** exponent;
+
+	if (!localeOptions) {
+		number = number.toPrecision(3);
+	}
+
+	const numberString = toLocaleString(Number(number), options.locale, localeOptions);
+
+	const unit = UNITS[exponent];
+
+	return prefix + numberString + ' ' + unit;
+}
+</script>
+<script src="https://kit.fontawesome.com/d665227561.js" crossorigin="anonymous"></script>
+<link media="all" type="text/css" rel="stylesheet" href="/themes/<%= theme %>/vendor/bootstrap/bootstrap.min.css?t=170608a5266f48d1f615f57483a043d0">
+<link media="all" type="text/css" rel="stylesheet" href="/themes/<%= theme %>/vendor/adminlte/admin.min.css?t=170608a5266f48d1f615f57483a043d0"> 
+<link media="all" type="text/css" rel="stylesheet" href="/themes/<%= theme %>/vendor/adminlte/colors/skin-blue.min.css?t=170608a5266f48d1f615f57483a043d0">
+<link media="all" type="text/css" rel="stylesheet" href="/themes/<%= theme %>/vendor/sweetalert/sweetalert.min.css?t=170608a5266f48d1f615f57483a043d0">
+<link media="all" type="text/css" rel="stylesheet" href="/themes/<%= theme %>/vendor/animate/animate.min.css?t=170608a5266f48d1f615f57483a043d0">
+<link media="all" type="text/css" rel="stylesheet" href="/themes/<%= theme %>/css/pterodactyl.css?t=170608a5266f48d1f615f57483a043d0">
+<% if (theme == "pterodactyl") { %>
+ 
+<% } else if (theme == "pterodactyl-dark") {%>
+<style>
+	.info-box {
+    display: block;
+    min-height: 90px;
+    background: rgb(63, 77, 90) !important;
+    width: 100%;
+    box-shadow: 0 1px 1pxrgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin-bottom: 15px;
+}
+</style>
+<% } %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->

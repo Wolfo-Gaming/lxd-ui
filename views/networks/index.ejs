@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/header', {theme: theme}) %>
+</head>
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+    <div class="wrapper">
+        <%- include('../partials/navbar', {user: user}) %>
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul class="sidebar-menu tree" data-widget="tree">
+
+
+                        <li class="header">ACCOUNT MANAGEMENT</li>
+                        <li class="1">
+                            <a href="/client/dashboard">
+                                <i class="fa fa-tv"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/account">
+                                <i class="fa fa-user"></i> <span>My Account</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client">
+                                <i class="fa fa-server"></i> <span>My Servers</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/client/networks">
+                                <i class="fa fa-network-wired"></i> <span>Networks</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/images">
+                                <i class="fa fa-compact-disc"></i> <span>Images</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/users">
+                                <i class="fa fa-solid fa-user"></i> <span>Users</span>
+                            </a>
+                        </li>
+                        <li class="1">
+                            <a href="/client/nodes">
+                                <i class="fa fa-solid fa-server"></i> <span>Nodes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+            <div class="content-wrapper">
+             
+                <section class="content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="info-box">
+                                <!-- Apply any bg-* class to to the icon to color it -->
+                                <span class="info-box-icon bg-red"><i class="fa fa-arrow-down"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Download</span>
+                                    <span class="info-box-number">
+                                        <%= pretty(network.state.counters.bytes_sent) %>
+                                    </span>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="info-box">
+                                <!-- Apply any bg-* class to to the icon to color it -->
+                                <span class="info-box-icon bg-green"><i class="fa fa-arrow-up"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Upload</span>
+                                    <span class="info-box-number">
+                                        <%= pretty(network.state.counters.bytes_received) %>
+                                    </span>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="info-box">
+                                <!-- Apply any bg-* class to to the icon to color it -->
+                                <span class="info-box-icon bg-blue"><i class="fa fa-server"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Instances</span>
+                                    <span class="info-box-number">
+                                        <%= network.used_by.filter(e=> e.includes('instance')).length %>
+                                    </span>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Primary Box Example</h3>
+                                </div>
+                                <div class="box-body">
+                                   
+                                        <div class="form-group">
+                                        <% networks_keys.split(' ').forEach(function(network_key) { %>
+                                            <% if (network.config[network_key]) { %>
+                                             
+                                                    <label for="inputEmail3" class="control-label"><%= network_key %> </label>
+                                                    <div>
+                                                        <input type="text" class="form-control" name="<%= network_key %>" id="<%= network_key %>" style="width:100%; background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto; margin-bottom: 10px;">
+                                                    </div>
+                                                    <script>
+                                                        var el = document.getElementById('<%= network_key %>');
+                                                        var config_data = <%- JSON.stringify(network.config) %>;
+                                                        el.value = config_data["<%- network_key %>"];
+                                                        console.log(config_data)
+                                                    </script>
+                                            <% } else { %>
+                                              
+                                                    <label for="inputEmail3" class="control-label"><%= network_key %> </label>
+                                                    <div>
+                                                        <input type="text" class="form-control" id="<%= network_key %>" style="width:100%; background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto; margin-bottom: 10px;">
+                                                    </div>
+                                               
+                                            <% } %>
+                                       
+                     
+                                          <% }); %>
+                                          
+                                        </div>
+                                        <script>
+                                            var config_data = <%- JSON.stringify(networks_keys) %>;
+                                            function submitData() {
+                                                var res = {}
+                                                var k = config_data.split(' ');
+                                                for (var i = 0; i < k.length; i++) {
+                                                    console.log(document.getElementById(k[i]).value)
+                                                    if (!document.getElementById(k[i]).value == "") {
+                                                        res[k[i]] = document.getElementById(k[i]).value;
+                                                    }
+                                                   
+                                                }
+                                                console.log(JSON.stringify(res))
+                                                var node_net = "<%= node_name %>-<%= network.name %>"
+                                                fetch("/api/v1/networks/" + node_net, {
+                                                    method: "POST",
+                                                    body: JSON.stringify(res),
+                                                    headers: {'Content-Type':'application/json'}
+                                                }).then(() => {
+                                                    location.reload();
+                                                });
+                                             
+                                            }
+                                          </script>
+                                          <button class="btn btn-info pull-left" onclick="submitData()">Update Config</button>
+                                  
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Instances</h3>
+                                </div>
+                                
+                                    <div class="box-body table-responsive no-padding">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>IPv4 Address</th>
+                                                </tr>
+                                                
+                                                <% network_inst.forEach(function(network_i) { %>
+                                                    <tr class="dynamic-update">
+                                                        <td><a href="/client/instances/<%= network_i.name %>"><img src="/images/distro/<%- network_i.logo %>" alt="test" height="30px" ><div style="display:inline; margin-left: 10px;"><%= network_i.name %></div></a></td>
+                                                        
+                                                        <td><code><%= network_i.state.network ? network_i.state.network["eth0"].addresses.find((address) => {
+                                                            return (address.scope == "global" && address.family == "inet")
+                                                        }).address : "0.0.0.0" %></code></td>
+                              
+                                                    </tr>
+                                                  <% }); %>
+                                                   
+                                     
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer class="main-footer">
+                <div class="pull-right small text-gray" style="margin-right:10px;margin-top:-7px;">
+                    <strong><i class="fa fa-fw fa-code-fork"></i></strong> 0.7.19<br />
+                    <strong><i class="fa fa-fw fa-clock-o"></i></strong> 0.045s
+                </div>
+                Copyright &copy; 2015 - 2021 <a href="https://pterodactyl.io/">Pterodactyl Software</a>.
+            </footer>
+            <div class="control-sidebar-bg"></div>
+    </div>
+    <script src="/js/keyboard.polyfill.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script>
+        keyboardeventKeyPolyfill.polyfill();
+    </script>
+
+    <script src="/js/laroute.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/jquery/jquery.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/sweetalert/sweetalert.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap/bootstrap.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script
+        src="/themes/pterodactyl/vendor/slimscroll/jquery.slimscroll.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/adminlte/app.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/socketio/socket.io.v203.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script
+        src="/themes/pterodactyl/vendor/bootstrap-notify/bootstrap-notify.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/js/autocomplete.js?t=170608a5266f48d1f615f57483a043d0"></script>
+
+    <script>
+        $(' #logoutButton').on('click', function (event) {
+            event.preventDefault(); var that = this; swal({
+                title: 'Do you want to log out?', type: 'warning', showCancelButton: true,
+                confirmButtonColor: '#d9534f', cancelButtonColor: '#d33',
+                confirmButtonText: 'Log out'
+            }, function () {
+                window.location = $(that).attr('href');
+            });
+        }); </script>
+
+                                        <script>
+                                            $('tr.server-description').on('mouseenter mouseleave', function (event) {
+                                                $(this).prev('tr').css({
+                                                    'background-color': (event.type === 'mouseenter') ? '#f5f5f5' : '',
+                                                });
+                                            });
+                                        </script>
+                                        <script src="/themes/pterodactyl/js/frontend/serverlist.js"></script>
+</body>
+
+</html>

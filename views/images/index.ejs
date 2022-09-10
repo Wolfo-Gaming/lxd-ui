@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('partials/header', {theme: theme}) %>
+</head>
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+    <div class="wrapper">
+        <%- include('partials/navbar', {user: user}) %>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu tree" data-widget="tree">
+                    <li class="1">
+                        <a href="/client/dashboard">
+                            <i class="fa fa-tv"></i> <span>Dashboard</span>
+                            </a>
+                    </li>
+                    <li class="header">ACCOUNT MANAGEMENT</li>
+                    <li class="1">
+                        <a href="/client/account">
+                                <i class="fa fa-user"></i> <span>My Account</span>
+                            </a>
+                    </li>
+                    <li class="active">
+                        <a href="/client">
+                                <i class="fa fa-server"></i> <span>My Servers</span>
+                            </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/networks">
+                            <i class="fa fa-network-wired"></i> <span>Networks</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/images">
+                            <i class="fa fa-compact-disc"></i> <span>Images</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/users">
+                            <i class="fa fa-solid fa-user"></i> <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/nodes">
+                            <i class="fa fa-solid fa-server"></i> <span>Nodes</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper">
+            <!-- <section class="content-header">
+                <h1>Your Servers<small>Servers you have access to.</small></h1>
+                <ol class="breadcrumb">
+                    <li><a href="/client">Home</a></li>
+                    <li class="active">Servers</li>
+                </ol>
+            </section> -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Server List</h3>
+                                
+                            </div>
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                      
+                                            <th>Name</th>
+                                            <th>Node</th>
+                                            <th>Network Address</th>
+                                       
+                                            <th class="text-center hidden-sm hidden-xs">Memory</th>
+                                            <th class="text-center hidden-sm hidden-xs">CPU</th>
+                                            <th class="text-center hidden-sm hidden-xs">Disk</th>
+                                            <th class="text-center hidden-sm hidden-xs">Processes</th>
+                                            <th class="text-center">Status</th>
+                                        </tr>
+                                        
+                                          <% images.forEach(function(instance){ %>
+                                            <tr class="dynamic-update" data-server="<%= instance.name %>">
+                                               
+                                                <td><a href="/client/instances/<%= instance.name %>"><%= instance.name %></a></td>
+                                                <td><%= instance.node %></td>
+                                                <td><code><%= instance.ip %></code></td>
+                                               
+                                                <td class="text-center hidden-sm hidden-xs"><span data-action="memory" id="<%= instance.name %>-memory">--</span> / <span data-action="memory-total" id="<%= instance.name %>-memory-total">--</span></td>
+                                                <td class="text-center hidden-sm hidden-xs"><span data-action="cpu" data-cpumax="0" id="<%= instance.name %>-cpu">--</span> %</td>
+                                                <td class="text-center hidden-sm hidden-xs"><span data-action="disk" id="<%= instance.name %>-disk">--</span></td>
+                                                <td class="text-center hidden-sm hidden-xs"><span data-action="proc" id="<%= instance.name %>-proc">--</span></td>
+                    
+                                                <td class="text-center" id="<%= instance.name %>-state">
+                                                    <span class="label label-default">Loading</span>
+                                               
+                                               </td>
+                                            </tr>
+                                          <% }); %>
+                                           
+                             
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right small text-gray" style="margin-right:10px;margin-top:-7px;">
+                <strong><i class="fa fa-fw fa-code-fork"></i></strong> 0.7.19<br />
+                <strong><i class="fa fa-fw fa-clock-o"></i></strong> 0.045s
+            </div>
+            Copyright &copy; 2015 - 2021 <a href="https://pterodactyl.io/">Pterodactyl Software</a>.
+        </footer>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <script src="/js/keyboard.polyfill.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script>
+        keyboardeventKeyPolyfill.polyfill();
+    </script>
+
+    <script src="/js/laroute.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/jquery/jquery.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/sweetalert/sweetalert.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap/bootstrap.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/slimscroll/jquery.slimscroll.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/adminlte/app.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/socketio/socket.io.v203.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap-notify/bootstrap-notify.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/js/autocomplete.js?t=170608a5266f48d1f615f57483a043d0"></script>
+
+    <script>
+        $('#logoutButton').on('click', function(event) {
+            event.preventDefault();
+
+            var that = this;
+            swal({
+                title: 'Do you want to log out?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d9534f',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Log out'
+            }, function() {
+                window.location = $(that).attr('href');
+            });
+        });
+    </script>
+
+    <script>
+        $('tr.server-description').on('mouseenter mouseleave', function(event) {
+            $(this).prev('tr').css({
+                'background-color': (event.type === 'mouseenter') ? '#f5f5f5' : '',
+            });
+        });
+    </script>
+    <script src="/themes/pterodactyl/js/frontend/serverlist.js"></script>
+</body>
+
+</html>

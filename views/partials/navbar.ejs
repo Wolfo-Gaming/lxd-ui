@@ -1,0 +1,42 @@
+<header class="main-header">
+    <div class="logo">
+
+    </div>
+    <nav class="navbar navbar-static-top">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="user-menu">
+                    <a href="/account">
+                        <i class="fa-solid fa-user" style="border-radius: 10px; background-size: 30px; background-color:grey;"></i>
+                            <span class="hidden-xs">wolfo wolfo</span>
+                        </a>
+                </li>
+                <li>
+                    <script>
+                        var changeTheme = function() {
+                            $.ajax({
+                                url: '/api/v1/user/theme',
+                                type: 'POST',
+                                success: function(data) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                                
+                        
+                    </script>
+                    <li><a href="#" onclick="changeTheme()" data-toggle="tooltip" data-placement="bottom" title="Change theme"><i class="fa-regular fa-lightbulb"></i></a></li>
+                </li>
+                <li>
+                    <li><a href="/auth/logout" id="logoutButton" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="fa fa-sign-out"></i></a></li>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

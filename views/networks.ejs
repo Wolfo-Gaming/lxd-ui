@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('partials/header', {theme: theme}) %>
+</head>
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+    <div class="wrapper">
+        <%- include('partials/navbar', {user: user}) %>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu tree" data-widget="tree">
+                    
+
+                    <li class="header">ACCOUNT MANAGEMENT</li>
+                    <li class="1">
+                        <a href="/client/dashboard">
+                            <i class="fa fa-tv"></i> <span>Dashboard</span>
+                            </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/account">
+                                <i class="fa fa-user"></i> <span>My Account</span>
+                            </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client">
+                                <i class="fa fa-server"></i> <span>My Servers</span>
+                            </a>
+                    </li>
+                    <li class="active">
+                        <a href="/client/networks">
+                            <i class="fa fa-network-wired"></i> <span>Networks</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/images">
+                            <i class="fa fa-compact-disc"></i> <span>Images</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/users">
+                            <i class="fa fa-solid fa-user"></i> <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/nodes">
+                            <i class="fa fa-solid fa-server"></i> <span>Nodes</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper">
+          
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">Network List</h3>
+                                
+                            </div>
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>IPv4 Address</th>
+                                            <th>IPv6 Address</th>
+                                            <th>Type</th>
+                                            <th>Used By</th>
+                                            <th class="text-center hidden-sm hidden-xs">Node</th>
+                                        </tr>
+                                        
+                                          <% networks.forEach(function(network){ %>
+                                            <tr class="dynamic-update" data-server="<%= network.name %>">
+                                                <td> <a href="/client/networks/<%= network.node %>-<%= network.name %>"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAAAXNSR0IArs4c6QAABV1JREFUeF7tm11MHFUUgM/szv7NLhQoha0ltJZUWy1V0latYikB+oMPbTEaS2IiJkZfrGn1wRqV2Af1QWss0WhMLFFTWl/ghRpbjCwmxtSfFNLYaqErlBas1pb9g2XZHXNmw6QLs3MvzO6ws9ybkJ3Ze+6593xzzrl37mU5YEWVAMf4qBNggAgewgAxQNqSCPMg5kHMg7QRYB6kjR91DurqOvUmx3FNPG9Zpa3LhWs9NTUFZrN5SBThy+rqutdpRkIFqLOz/ZDLlfM2jUKjyEQik821tfWHSeOlAtTdfWaQ47hSkjIj1YuiOLRtW91K0pipAHk8XSJJkdHqMdxqanYS7ScKoOHZCAjtqqqqJdpPFGCAKGKDeRABkh6Abt3yK44iLy+H4hHSi2Du8ft9EAoFobGxiRhBRAE9Qqy9owt6es7OsnLr1gdg755aeusJkj7fmARnuhgeUEnJcnj5YJNmQOgtPp8PotGpBF2GAfT+kWMwPDyiCOKDI6/NG1A4HJY8JhyeUNRhGEAHDiZfpB969XkoKlo6J0jRaFQCEwwGVNsZAtD16zfgnXc/TWrInt11UFW1mRoQgsE/USSvbTMSkMfzM/x3c0w2+PLlK0nDC4XKy9dCfn5uAiClxD0+HpLARCIRapgZCai5uQV8fuUpnday2/PS5OSkBGZiYpy2eWbPYqkCFIvFwO8fg0BAPc+oUdPdgzCfkIpaviG1na7f/+LTEAoFACGplYKCxNCcKasbILVpmtbodMi53UuhflclJAOlC6BMhYPA7TYBioqLoH7XZnC57LOeQdoB4fvTW4db0vHwNem0WGwgCLlgtdokPY83bFkYQF7vNTja0qrJmFQ2NpnM4HTmgt3uTFBb+chaKCtbrr8HZRIgwZEDgjMXOG72+/eiBmSzOaRw4nlLUmdclIB43iqFk9U6O/nOJLWoAHGcSQLjcLio09eiAYRQEA5CmkvJekAYRggGw2o+JWsBmc28BMZmE+bDRW6ThYA4CYwgpGbDPqsA4SIP4eCiL1UlKwDh6wGCwc9UF0MDMpt4aQVst2vLM2pQDQsIV8DoNekuCwaov38IPvr4qznbh7MSgsFZSo+iOyA8McB94IsXvdB24hS1jRbeKoUTzesBtVIKQV0BBYNBaS8Yz56uXr1BBQhnJAwnhyNxG4LCtpSI6AIITyfjp5RhedA0gNS2IVJiPYWStAPq6PhaxPPtmSUZoIoVg7Dxzn9hxTIzRGJO+OzHarnpcw9/D0scIem+b3glnP5jvVz3Sk2nfN3etxEG/nFL92XLRmHvhl/luve+e0y+3n73edhQMijdj40LCX1NC6Ud0PHjxxSPKZUA8WYLPPXQJahcEz9rH7pZmDBohLDEHgf0Q/86GVCBEIAD1d/IhreefVQGtKnUC7vLf5Hr3uh8Qr5+suInKL/jimJfGQUId/KcmGeEHFAb9KIEhNsQmIRNpvg2BAN0WzI6cdID4XDiAV6mAUr7qUayHISczvX+Bb293oT8nUmA3O482LG9QnGuS9m5mBog7HlgYAT6B0YhEIj/o1Llql5YXRBP0n8H8uHbPx+UB9iwvhtc1rhc3+hqOHftLunaZQtBw709styZS5tgxF8o3a8pHIYtpeflui9+2ylfJ+uruDhfOgu7/77kv5zQDZDi4zHAlwwQ4SExQAyQtjhmHsQ8iHmQNgL6edDnvwNw69I6Wt2VixcaG5+9h9Qt1W812tpa94ui+CFJmZHqOY57ad++Z46SxkwFCJXEIcVeML4niRc4zvQJDRy0mxoQiXS21jNAhCfLADFA2oKfeRDzIOZB2ggwD9LGj+UgAr//ARTtCXb9kXlqAAAAAElFTkSuQmCC" alt="Network" height="30px"> <div style="display:inline; margin-left: 10px;"><%= network.name %></div></a></td>
+                                                
+                                                <td><code><%= network.config['ipv4.address'] ? network.config['ipv4.address'] : "0.0.0.0/0" %></code></td>
+                                                <td><code><%= network.config['ipv6.address'] ? network.config['ipv6.address'] : ":::/0" %></code></td>
+                                                <td><%= network.type %></td>
+                                                <td><code><%= network.used_by.filter(e => e.includes('instance')).length %></code></td>
+                                                <td class="text-center hidden-sm hidden-xs"><%= network.node %></td>
+                                            </tr>
+                                          <% }); %>
+                                           
+                             
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right small text-gray" style="margin-right:10px;margin-top:-7px;">
+                <strong><i class="fa fa-fw fa-code-fork"></i></strong> 0.7.19<br />
+                <strong><i class="fa fa-fw fa-clock-o"></i></strong> 0.045s
+            </div>
+            Copyright &copy; 2015 - 2021 <a href="https://pterodactyl.io/">Pterodactyl Software</a>.
+        </footer>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <script src="/js/keyboard.polyfill.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script>
+        keyboardeventKeyPolyfill.polyfill();
+    </script>
+
+    <script src="/js/laroute.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/jquery/jquery.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/sweetalert/sweetalert.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap/bootstrap.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/slimscroll/jquery.slimscroll.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/adminlte/app.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/socketio/socket.io.v203.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap-notify/bootstrap-notify.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/js/autocomplete.js?t=170608a5266f48d1f615f57483a043d0"></script>
+
+    <script>
+        $('#logoutButton').on('click', function(event) {
+            event.preventDefault();
+
+            var that = this;
+            swal({
+                title: 'Do you want to log out?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d9534f',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Log out'
+            }, function() {
+                window.location = $(that).attr('href');
+            });
+        });
+    </script>
+
+    <script>
+        $('tr.server-description').on('mouseenter mouseleave', function(event) {
+            $(this).prev('tr').css({
+                'background-color': (event.type === 'mouseenter') ? '#f5f5f5' : '',
+            });
+        });
+    </script>
+    <script src="/themes/pterodactyl/js/frontend/serverlist.js"></script>
+</body>
+
+</html>

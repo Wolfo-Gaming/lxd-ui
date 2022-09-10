@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('partials/header', {theme: theme}) %>
+</head>
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+    <div class="wrapper">
+        <%- include('partials/navbar', {user: user}) %>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu tree" data-widget="tree">
+                    <li class="header">ACCOUNT MANAGEMENT</li>
+                    <li class="1">
+                        <a href="/client/dashboard">
+                            <i class="fa fa-tv"></i> <span>Dashboard</span>
+                            </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/account">
+                                <i class="fa fa-user"></i> <span>My Account</span>
+                            </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client">
+                                <i class="fa fa-server"></i> <span>My Servers</span>
+                            </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/networks">
+                            <i class="fa fa-network-wired"></i> <span>Networks</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/client/images">
+                            <i class="fa fa-compact-disc"></i> <span>Images</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/users">
+                            <i class="fa fa-solid fa-user"></i> <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="1">
+                        <a href="/client/nodes">
+                            <i class="fa fa-solid fa-server"></i> <span>Nodes</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper">
+            <!-- <section class="content-header">
+                <h1>Your Images<small>Images you have access to.</small></h1>
+                <ol class="breadcrumb">
+                    <li><a href="/client">Home</a></li>
+                    <li class="active">Images</li>
+                </ol>
+            </section> -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">Images List</h3>
+                                
+                            </div>
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>OS</th>
+                                            <th>Fingerprint</th>
+                                            <th>Node</th>
+                                            <th>Aliases</th>
+                                       
+                                            <th class="text-center hidden-sm hidden-xs">Architecture</th>
+                                            <th class="text-center hidden-sm hidden-xs">Created At</th>
+                                            <th class="text-center hidden-sm hidden-xs">Size</th>
+                                            <th class="text-center hidden-sm hidden-xs">Type</th>
+                                        </tr>
+                                        
+                                          <% images.forEach(function(image){ %>
+                                            <tr class="dynamic-update" data-server="<%= image.fingerprint %>">
+                                                <td><img src="/images/distro/<%- image.logo %>" alt="test" height="30px" ><div style="display:inline; margin-left: 10px;"><%= image.properties.os.replace(/\w/, c => c.toUpperCase()) %> <%= image.properties.version ?? image.properties.release %></div></td>
+                                                <td><code><%= image.fingerprint %></code></td>
+                                                <td><%= image.node %></td>
+                                                <td><code><%= image.aliases %></code></td>
+                                                <td class="text-center hidden-sm hidden-xs"><%= image.architecture %></td>
+                                                <td class="text-center hidden-sm hidden-xs"><%= image.created_at.replace('T00:00:00Z','') %></td>
+                                                <td class="text-center hidden-sm hidden-xs"><%= pretty( image.size ) %></td>
+                                                <td class="text-center">
+                                                    <% if (image.type == "container") { %>
+                                                        <span class="label label-success">Container</span>
+                                                    <% } else if (image.type == "virtual-machine") {%>
+                                                        <span class="label label-warning">Virtual Machine</span>
+                                                    <% }%>
+                                                    
+                                                </td>
+                                            </tr>
+                                          <% }); %>
+                                           
+                             
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right small text-gray" style="margin-right:10px;margin-top:-7px;">
+                <strong><i class="fa fa-fw fa-code-fork"></i></strong> 0.7.19<br />
+                <strong><i class="fa fa-fw fa-clock-o"></i></strong> 0.045s
+            </div>
+            Copyright &copy; 2015 - 2021 <a href="https://pterodactyl.io/">Pterodactyl Software</a>.
+        </footer>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <script src="/js/keyboard.polyfill.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script>
+        keyboardeventKeyPolyfill.polyfill();
+    </script>
+
+    <script src="/js/laroute.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/jquery/jquery.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/sweetalert/sweetalert.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap/bootstrap.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/slimscroll/jquery.slimscroll.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/adminlte/app.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/socketio/socket.io.v203.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/themes/pterodactyl/vendor/bootstrap-notify/bootstrap-notify.min.js?t=170608a5266f48d1f615f57483a043d0"></script>
+    <script src="/js/autocomplete.js?t=170608a5266f48d1f615f57483a043d0"></script>
+
+    <script>
+        $('#logoutButton').on('click', function(event) {
+            event.preventDefault();
+
+            var that = this;
+            swal({
+                title: 'Do you want to log out?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d9534f',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Log out'
+            }, function() {
+                window.location = $(that).attr('href');
+            });
+        });
+    </script>
+
+    <script>
+        $('tr.server-description').on('mouseenter mouseleave', function(event) {
+            $(this).prev('tr').css({
+                'background-color': (event.type === 'mouseenter') ? '#f5f5f5' : '',
+            });
+        });
+    </script>
+    <script src="/themes/pterodactyl/js/frontend/serverlist.js"></script>
+</body>
+
+</html>
